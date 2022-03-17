@@ -7,9 +7,13 @@ import {
   BtnLogin,
   BtnNewAccount,
 } from "./style/loginPageStyle";
-//import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 function LoginPage() {
+
+  const { register, handleSubmit } = useForm();
+  const onSubmit = data => console.log(data);
+
   return (
     <Container id="initial-page">
       <Presentation id="presentation">
@@ -20,12 +24,12 @@ function LoginPage() {
       </Presentation>
 
       <ContainerLogin id="login-area">
-        <Form>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <label>
-            <input placeholder="Email or phone number" type="text" />
+            <input placeholder="Email or phone number" name="email" type="email" {...register("email")} />
           </label>
           <label>
-            <input placeholder="Password" type="password" />
+            <input placeholder="Password" name="password" type="password" {...register("password")} />
           </label>
           <BtnLogin href="./NewAccount/newAccount">Log In</BtnLogin>
         </Form>
