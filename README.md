@@ -37,7 +37,7 @@ The following tools were used in the construction of the project:
 
 ### Features
  
-- [ ] Access the information that the user pass in the form to create a account.
+- [x] Access the information that the user pass in the form to create a account and add in database.
 - [ ] Complete a validation in login.
 
  ##  Preview of Project
