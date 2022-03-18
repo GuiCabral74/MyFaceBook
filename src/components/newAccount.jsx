@@ -9,6 +9,8 @@ import {
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 function NewAccount() {
   const [user, setUser] = useState({
@@ -37,6 +39,8 @@ function NewAccount() {
 
     // setName("");
     // setLastName("");
+
+
   }
 
   const handleFormChange = (e) => {
@@ -83,18 +87,31 @@ function NewAccount() {
     }
   };
 
-  function teste() {
-    axios
-      .get("https://my-facebook-cloneapp-default-rtdb.firebaseio.com/users.json")
-      .then((req) => console.log(req.data))
-      .catch((err) => console.log(err));
+  // function teste() {
+  //   axios
+  //     .get("https://my-facebook-cloneapp-default-rtdb.firebaseio.com/users.json")
+  //     .then((req) => console.log(req.data))
+  //     .catch((err) => console.log(err));
+  // }
+
+  async function register() {
+    try {
+      const newUser = await createUserWithEmailAndPassword(
+        auth,
+        user.email,
+        user.password,
+      );
+      console.log(newUser.user.email);
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 
   return (
     <ContainerNewAccount
-      onLoad={teste()}
+      // onLoad={teste()}
       id="containerNewAccount"
-      onSubmit={(event) => handleSubmit(event)}
+      onSubmit={(event) => {handleSubmit(event); register()}}
     >
       <h1>facebook</h1>
       <ContainerForm id="containerForm">

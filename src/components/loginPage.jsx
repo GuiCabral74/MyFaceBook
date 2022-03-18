@@ -8,11 +8,45 @@ import {
   BtnNewAccount,
 } from "./style/loginPageStyle";
 import { useForm } from "react-hook-form";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
+import { useState } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
 
 function LoginPage() {
 
-  const { register, handleSubmit } = useForm();
-  const onSubmit = data => console.log(data);
+  const history = useNavigate();
+
+  //const { register, handleSubmit } = useForm();
+  //const onSubmit = data => console.log(data);
+
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setPassword] = useState("");
+  const [logged, setLogged] = useState (false);
+
+
+  async function Login(e) {
+    e.preventDafult();
+    try {
+      const user = await signInWithEmailAndPassword(
+        auth,
+        loginEmail,
+        loginPassword,
+      );
+      console.log(user.user.email);
+      console.log("Deu certo");
+      setLogged(true);
+      if (logged == true) {
+        <Navigate to="/pagina-teste" />
+          //history.push("/pagina-teste")
+
+      }
+      
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
 
   return (
     <Container id="initial-page">
@@ -24,14 +58,15 @@ function LoginPage() {
       </Presentation>
 
       <ContainerLogin id="login-area">
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        {/* <Form onSubmit={handleSubmit(onSubmit)}> */}
+        <Form onSubmit={(e) =>Login(e)}>
           <label>
-            <input placeholder="Email or phone number" name="email" type="email" {...register("email")} />
+            <input placeholder="Email or phone number" name="email" type="email"  onChange={(event) => setLoginEmail(event.target.value)} />
           </label>
           <label>
-            <input placeholder="Password" name="password" type="password" {...register("password")} />
+            <input placeholder="Password" name="password" type="password"  onChange={(event) => setPassword(event.target.value)}/>
           </label>
-          <BtnLogin href="./NewAccount/newAccount">Log In</BtnLogin>
+          <BtnLogin>Log In</BtnLogin>
         </Form>
         <BtnNewAccount to="new-account">Create New Account</BtnNewAccount>
       </ContainerLogin>
